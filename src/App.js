@@ -2,13 +2,61 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [age, setAge] = useState(0);
+  const [notes, setNotes] = useState([]);
+  const [updatingNote, setUpdatingNote] = useState(false);
 
-  const onSubmit = (e) => {
+  const [note, setNote] = useState({
+    name: "",
+    createdBy: "",
+    description: "",
+    education: [],
+    previousJob: {
+      companYName: "",
+      salary: "",
+      years: "",
+    },
+  });
+
+  const onCreate = (e) => {
     e.preventDefault();
-    // do the job
+    const totalNotes = notes.length;
+    setNotes([
+      ...notes,
+      {
+        ...note,
+        createdAt: new Date().toDateString(),
+        index: totalNotes,
+      },
+    ]);
+    setNote({
+      name: "",
+      createdBy: "",
+      description: "",
+    });
+  };
+
+  const changeTHisNote = (note) => {
+    setUpdatingNote(true);
+    setNote(note);
+  };
+
+  const updateNote = (e) => {
+    e.preventDefault();
+    const tempNotes = [...notes];
+    tempNotes[note.index] = note;
+    setNotes(tempNotes);
+    setNote({
+      name: "",
+      createdBy: "",
+      description: "",
+    });
+    setUpdatingNote(false);
+  };
+
+  const deleteNote = (ind) => {
+    const tempNotes = [...notes];
+    tempNotes.splice(ind, 1);
+    setNotes(tempNotes);
   };
 
   return (
@@ -18,11 +66,11 @@ function App() {
         height: "100vh",
         border: "2px solid red",
         display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
+        flexDirection: "column",
+        overflowY: "auto",
       }}
     >
+      <h1>MODE: {updatingNote ? "UPDATE" : "CREATE"}</h1>
       <form
         style={{
           display: "flex",
@@ -30,39 +78,45 @@ function App() {
           width: "200px",
           border: "2px solid blue",
         }}
-        onSubmit={onSubmit}
+        onSubmit={updatingNote ? updateNote : onCreate}
       >
         <input
-          placeholder="email"
           type="text"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
+          value={note.name}
+          onChange={(e) => setNote({ ...note, name: e.target.value })}
+          placeholder="Name"
         />
         <input
-          placeholder="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          type="description"
+          value={note.description}
+          onChange={(e) => setNote({ ...note, description: e.target.value })}
+          placeholder="Description"
         />
         <input
-          placeholder="age"
-          type="number"
-          value={age}
-          onChange={(e) => {
-            if (e.target.value > 100) {
-              alert("Value can't be greater than 100 !");
-            } else {
-              setAge(e.target.value);
-            }
-          }}
-          min={0}
-          max={100}
+          type="type"
+          value={note.createdBy}
+          onChange={(e) => setNote({ ...note, createdBy: e.target.value })}
+          placeholder="Created By"
         />
-        <input type="checkbox" />
-        <button type="submit">Submit</button>
+        <button type="submit">{updatingNote ? "Update" : "Create"}</button>
       </form>
+
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <h2>My Notes:</h2>
+        {notes.map((note, noteIndex) => (
+          <div
+            style={{ display: "flex", flexDirection: "column", width: "300px" }}
+            key={note.createdAt + noteIndex}
+          >
+            <p>Title: {note.name}</p>
+            <p>Created At: {note.createdAt}</p>
+            <p>Created By: {note.createdBy}</p>
+            <p>Description: {note.description}</p>
+            <button onClick={() => changeTHisNote(note)}>Edit</button>
+            <button onClick={() => deleteNote(note.index)}>Delete Note</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
