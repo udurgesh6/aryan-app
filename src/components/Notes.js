@@ -27,8 +27,10 @@ const Notes = () => {
   }, []);
 
   // useEffect(() => {
+  // This is where the sideeffects run like - api calls or subscription
   //   first
   //   return () => {
+  // this is where the services are unsubscribed also called as cleanup function
   //     second
   //   }
   // }, [third])
