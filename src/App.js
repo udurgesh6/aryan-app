@@ -6,24 +6,21 @@ function App() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const callApi = async () => {
     setLoading(true);
-    axios
-      .get("https://jsonplaceolder.typicode.com/todos/1")
-      .then((response) => {
-        console.log(response);
-        //
-        //
-        //
-        //
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log("Done");
-        setLoading(false);
-      });
+    try {
+      const response = await axios.get(
+        "https://jsonplaceolder.typicode.com/todos/1"
+      );
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    callApi();
   }, []);
 
   return (
