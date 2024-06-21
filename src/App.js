@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
-import Notes from "./components/Notes";
 
 function App() {
-  const [showNote, setShowNote] = useState(false);
-  const changeShowOfNote = () => {
-    setShowNote(!showNote);
+  const [count, setCount] = useState(1);
+
+  const incrementCount = () => {
+    setCount(count + 1);
   };
+
+  useEffect(() => {
+    console.log(count);
+    if (count % 2 === 0) {
+      alert(`Hello the count is ${count}`);
+    }
+  }, [1]);
+
   return (
     <div>
-      <div>{showNote && <Notes />}</div>
-      <button onClick={changeShowOfNote}>Show/Disable Note</button>
+      <p>{count}</p>
+      <button onClick={incrementCount}>Increment</button>
     </div>
   );
 }
