@@ -1,33 +1,19 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import Home from "./components/Home";
+import About from "./components/About";
+import Products from "./components/Products";
+import Navbar from "./components/Navbar";
 
 function App() {
-  const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const callApi = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        "https://jsonplaceolder.typicode.com/todos/1"
-      );
-      console.log(response);
-    } catch (err) {
-      console.log(err);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    callApi();
-  }, []);
-
   return (
     <div>
-      <p>Status: {loading ? "Loading..." : "Done"}</p>
-      <h1>Hello World</h1>
-      <p>{post?.title}</p>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="*" element={<Products />} />
+      </Routes>
     </div>
   );
 }
