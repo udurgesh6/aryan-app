@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 
 const ChildHome = ({ handleClick }) => {
-  console.log("hello world I am ChildHome Component");
+  console.log("I am ChildHome Component");
 
   return (
     <>
