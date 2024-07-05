@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { format } from "date-fns";
 
 const App = () => {
@@ -6,14 +6,25 @@ const App = () => {
 
   const time = useTime();
 
-  const allPrimes = [];
+  // const allPrimes = [];
 
-  for (let counter = 2; counter < selectedNum; counter++) {
-    console.log("Counter");
-    if (isPrime(counter)) {
-      allPrimes.push(counter);
+  // for (let counter = 2; counter < selectedNum; counter++) {
+  //   console.log("Counter");
+  //   if (isPrime(counter)) {
+  //     allPrimes.push(counter);
+  //   }
+  // }
+
+  const allPrimes = useMemo(() => {
+    const result = [];
+    for (let counter = 2; counter < selectedNum; counter++) {
+      console.log("Counter");
+      if (isPrime(counter)) {
+        result.push(counter);
+      }
     }
-  }
+    return result;
+  }, [selectedNum]);
 
   return (
     <div className="flex flex-col">
