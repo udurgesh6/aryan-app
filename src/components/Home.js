@@ -1,24 +1,65 @@
-import React, { useRef, useState } from "react";
-import ChildHome from "./ChildHome";
+import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
 
 const App = () => {
-  console.log("I am Parent");
+  const [selectedNum, setSelectedNum] = useState(10);
 
-  const nameRef = useRef();
+  const time = useTime();
 
-  const [count, setCount] = useState(0);
+  const allPrimes = [];
 
-  const [name, setName] = useState("");
-
-  const handleClick = () => {
-    setCount(count + 1);
-  };
+  for (let counter = 2; counter < selectedNum; counter++) {
+    console.log("Counter");
+    if (isPrime(counter)) {
+      allPrimes.push(counter);
+    }
+  }
 
   return (
     <div className="flex flex-col">
-      <input className="border-2" ref={nameRef} />
-      <ChildHome handleClick={handleClick} />
+      <p className="text-xl font-bold text-center">
+        {format(time, "hh:mm:ss")}
+      </p>
+      <input
+        className="border border-black mt-20"
+        value={selectedNum}
+        onChange={(e) => setSelectedNum(e.target.value)}
+      />
+      <p>
+        There are {allPrimes.length} primes between 1 and {selectedNum}
+      </p>
+      <p>{allPrimes.join(", ")}</p>
     </div>
   );
 };
+
+function isPrime(number) {
+  let isPrime = true;
+
+  for (let i = 2; i < number; i++) {
+    if (number % i === 0) {
+      isPrime = false;
+      break;
+    }
+  }
+
+  return isPrime;
+}
+
+function useTime() {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, []);
+
+  return time;
+}
+
 export default App;
