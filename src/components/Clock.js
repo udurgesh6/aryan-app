@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { format } from "date-fns";
 
-const Clock = () => {
+const Clock = ({ time }) => {
   console.log("I am a Clock Component");
-  const time = useTime();
 
   return (
     <div>
@@ -13,21 +12,5 @@ const Clock = () => {
     </div>
   );
 };
-
-function useTime() {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, []);
-
-  return time;
-}
 
 export default Clock;

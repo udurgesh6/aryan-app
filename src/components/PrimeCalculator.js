@@ -1,19 +1,11 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, memo } from "react";
+
+// Pure Component - SRP
+// memo - it will only re render when the state or received props changes !
 
 const PrimeCalculator = () => {
   console.log("I am prime calculator");
   const [selectedNum, setSelectedNum] = useState(10);
-
-  //   const allPrimes = useMemo(() => {
-  //     const result = [];
-  //     for (let counter = 2; counter < selectedNum; counter++) {
-  //       console.log("Counter");
-  //       if (isPrime(counter)) {
-  //         result.push(counter);
-  //       }
-  //     }
-  //     return result;
-  //   }, [selectedNum]);
 
   const allPrimes = [];
 
@@ -52,4 +44,4 @@ function isPrime(number) {
   return isPrime;
 }
 
-export default PrimeCalculator;
+export default memo(PrimeCalculator);
