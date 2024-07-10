@@ -1,47 +1,19 @@
-import React, { useEffect, useState } from "react";
-import Clock from "./Clock";
-import PrimeCalculator from "./PrimeCalculator";
-import { getSeconds } from "date-fns";
+import { useState } from "react";
+import HomeChild1 from "./HomeChild1";
+import { HomeContext } from "../context/HomeContext";
 
 const Home = () => {
-  const time = useTime();
-
-  const backgroundColor = getBackgroundColorFromTime(time);
-
+  const [name, setName] = useState("Durgesh");
+  const fn = () => {};
   return (
-    <div className="flex flex-col" style={{ backgroundColor }}>
-      <Clock time={time} />
-      <PrimeCalculator />
-    </div>
+    <HomeContext.Provider value={{ name: name, setName: setName }}>
+      <div className="border-2 border-amber-900 p-6">
+        <p>I am a Home Component</p>
+        <input value={name} onChange={(e) => setName(e.target.value)} />
+        <HomeChild1 />
+      </div>
+    </HomeContext.Provider>
   );
-};
-
-function useTime() {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, []);
-
-  return time;
-}
-
-const getBackgroundColorFromTime = (time) => {
-  const hours = getSeconds(time);
-
-  if (hours < 20) {
-    return "hsl(50deg 100% 90%)";
-  } else if (hours < 40) {
-    return "hsl(220deg 60% 92%)";
-  } else {
-    return "hsl(220deg 100% 80%)";
-  }
 };
 
 export default Home;
